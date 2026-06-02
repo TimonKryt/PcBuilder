@@ -1,0 +1,2 @@
+D:\source\repos\PcBuilder\PcBuilder.Api\wwwroot\index.html
+wwwroot\index.html

@@ -1,0 +1,995 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Builder - Конфигуратор ПК</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        /* Переменные для тем оформления с новой палитрой */
+        :root {
+            /* ТЕМНАЯ ТЕМА: Темно-зеленый и пастельный темно-фиолетовый */
+            --bg-color: #0b1411; /* Глубокий темно-зеленый, почти черный базовый фон */
+            --panel-bg: #142420; /* Насыщенный темно-зеленый для панелей */
+            --card-bg: #223c35; /* Приглушенный зеленый для карточек */
+            --card-hover: #2d4f46; /* Светло-зеленый для ховера */
+            --text-color: #e2f0ec; /* Светлый мятно-белый текст */
+            --text-muted: #839e97; /* Приглушенный зеленый для второстепенного текста */
+            --primary: #8b7cc4; /* Пастельный темно-фиолетовый (черничный/лавандовый) */
+            --primary-hover: #7665b5; /* Более глубокий фиолетовый */
+            --secondary: #2d4f46;
+            --secondary-hover: #223c35;
+            --accent-error: #f472b6; /* Пастельный розовый для ошибок вместо ядреного красного */
+            --accent-success: #34d399; /* Мягкий зеленый для цен и итогов */
+            --border-color: #223c35;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+            --radius-lg: 12px;
+            --radius-md: 8px;
+        }
+
+        [data-theme="light"] {
+            /* СВЕТЛАЯ ТЕМА: Пастельный светло-голубой и светло-желтый */
+            --bg-color: #f0f7fa; /* Нежный светло-голубой фон всей страницы */
+            --panel-bg: #ffffff; /* Чистый белый для панелей */
+            --card-bg: #fefce8; /* Пастельный нежно-желтый для карточек */
+            --card-hover: #fef9c3; /* Чуть более насыщенный желтый при наведении */
+            --text-color: #1e293b; /* Темный грифельный текст для отличной читаемости */
+            --text-muted: #64748b; /* Серый текст */
+            --primary: #38bdf8; /* Красивый пастельный небесно-голубой */
+            --primary-hover: #0ea5e9; /* Активный голубой */
+            --secondary: #e0f2fe; /* Светлый серо-голубой для кнопок отмены */
+            --secondary-hover: #bae6fd;
+            --accent-error: #ef4444;
+            --accent-success: #10b981;
+            --border-color: #e2e8f0;
+            --shadow: 0 10px 15px -3px rgba(56, 189, 248, 0.08), 0 4px 6px -4px rgba(56, 189, 248, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            line-height: 1.5;
+            padding-bottom: 60px; /* Запас для мобильной навигации */
+        }
+
+        .material-symbols-outlined {
+            font-size: 1.25rem;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        /* Кастомный скроллбар */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--panel-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--card-bg);
+            border-radius: 4px;
+        }
+
+        /* Шапка */
+        .header {
+            background: var(--panel-bg);
+            padding: 1.25rem 2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+            .header h1 {
+                color: var(--text-color);
+                font-size: 1.5rem;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Кнопка смены темы */
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .theme-toggle:hover {
+                background: var(--card-hover);
+            }
+
+        /* Контейнер */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Панель авторизации */
+        .auth-bar {
+            background: var(--panel-bg);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: var(--radius-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+            .auth-bar span {
+                font-size: 0.95rem;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+        /* Сетка конфигуратора */
+        .builder-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr 340px;
+            gap: 1.5rem;
+        }
+
+        /* Мобильные вкладки */
+        .mobile-tabs {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--panel-bg);
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            grid-template-columns: repeat(3, 1fr);
+            z-index: 999;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .mobile-tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+            .mobile-tab-btn.active {
+                color: var(--primary);
+            }
+
+            .mobile-tab-btn .material-symbols-outlined {
+                font-size: 1.5rem;
+                margin-bottom: 2px;
+            }
+
+        /* Панели */
+        .panel {
+            background: var(--panel-bg);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            height: fit-content;
+        }
+
+            .panel h3 {
+                color: var(--text-color);
+                margin-bottom: 1.25rem;
+                font-size: 1.1rem;
+                font-weight: 700;
+                border-bottom: 2px solid var(--border-color);
+                padding-bottom: 0.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+        /* Кнопка "Назад" для мобильных */
+        .btn-back-mobile {
+            display: none;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: var(--radius-md);
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .btn-back-mobile:hover {
+                background: var(--card-hover);
+            }
+
+        /* Карточки деталей */
+        .component-item, .product-card, .build-item {
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.65rem;
+            background: var(--card-bg);
+            border: 1px solid transparent;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+            .component-item:hover, .product-card:hover, .build-item:hover {
+                background: var(--card-hover);
+                border-color: var(--border-color);
+            }
+
+            .component-item.selected {
+                background: var(--primary);
+                color: #fff;
+                font-weight: 600;
+            }
+        /* В светлой теме на голубом фоне белый текст читается отлично, но для идеала настраиваем: */
+        [data-theme="light"] .component-item.selected {
+            color: #ffffff;
+        }
+
+        /* Слоты сборки */
+        .build-slot {
+            display: flex;
+            align-items: center;
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.65rem;
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            border: 2px dashed var(--border-color);
+            font-size: 0.9rem;
+        }
+
+            .build-slot.filled {
+                border: 2px solid var(--accent-success);
+                background: rgba(16, 185, 129, 0.05);
+            }
+
+        .slot-label {
+            width: 110px;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .slot-value {
+            flex: 1;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Цены */
+        .product-price {
+            color: var(--accent-success);
+            font-weight: 700;
+            margin-top: 0.25rem;
+        }
+
+        .total-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            margin: 1.25rem 0;
+            padding: 1rem;
+            background: var(--accent-success);
+            border-radius: var(--radius-md);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        /* Кнопки */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.2rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+            .btn:hover {
+                background: var(--primary-hover);
+            }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+            .btn-secondary:hover {
+                background: var(--secondary-hover);
+            }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-full {
+            width: 100%;
+            margin-top: 0.65rem;
+            padding: 0.85rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 20, 17, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--panel-bg);
+            max-width: 440px;
+            margin: 10vh auto;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+        }
+
+            .modal-content input {
+                width: 100%;
+                padding: 0.75rem 1rem;
+                margin-bottom: 0.85rem;
+                background: var(--card-bg);
+                border: 1px solid var(--border-color);
+                color: var(--text-color);
+                border-radius: var(--radius-md);
+                outline: none;
+            }
+
+                .modal-content input:focus {
+                    border-color: var(--primary);
+                }
+
+        /* Адаптивность для смартфонов */
+        @media (max-width: 1100px) {
+            body {
+                padding-bottom: 80px;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .builder-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .panel {
+                display: none;
+                border-radius: 0;
+                margin-bottom: 0;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+                padding: 1rem 0;
+            }
+
+                .panel.mobile-active {
+                    display: flex;
+                }
+
+            .mobile-tabs {
+                display: grid;
+            }
+
+            .auth-bar {
+                margin-bottom: 0;
+                border-radius: var(--radius-md);
+            }
+
+            .btn-back-mobile {
+                display: inline-flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>
+            <span class="material-symbols-outlined" style="font-size: 2rem; color: var(--primary);">devices</span>
+            PC Builder
+        </h1>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" title="Переключить тему">
+                <span class="material-symbols-outlined" id="themeIcon">dark_mode</span>
+            </button>
+            <button class="btn btn-small" onclick="showMyBuilds()">
+                <span class="material-symbols-outlined">folder_open</span> Мои сборки
+            </button>
+        </div>
+    </div>
+
+    <div class="mobile-tabs">
+        <button class="mobile-tab-btn active" id="tab-btn-0" onclick="switchMobileTab(0, this)">
+            <span class="material-symbols-outlined">list</span>
+            Детали
+        </button>
+        <button class="mobile-tab-btn" id="tab-btn-1" onclick="switchMobileTab(1, this)">
+            <span class="material-symbols-outlined">construction</span>
+            Сборка
+        </button>
+        <button class="mobile-tab-btn" id="tab-btn-2" onclick="switchMobileTab(2, this)">
+            <span class="material-symbols-outlined">shopping_basket</span>
+            Товары
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="auth-bar">
+            <span id="authStatus" style="color: var(--accent-error);">
+                <span class="material-symbols-outlined">gpp_maybe</span> Не авторизован
+            </span>
+            <div>
+                <button class="btn btn-small" id="btnLogin" onclick="showLogin()">Войти</button>
+                <button class="btn btn-small" id="btnRegister" onclick="showRegister()">Регистрация</button>
+                <button class="btn btn-small" id="btnLogout" onclick="logout()" style="display:none;">Выйти</button>
+            </div>
+        </div>
+
+        <div class="modal" id="authModal">
+            <div class="modal-content">
+                <h2 id="authTitle">Вход</h2>
+                <input type="email" id="authEmail" placeholder="Email">
+                <input type="text" id="authUsername" placeholder="Имя пользователя" style="display:none;">
+                <input type="password" id="authPassword" placeholder="Пароль">
+                <button class="btn btn-full" id="authSubmit">Войти</button>
+                <button class="btn btn-full btn-secondary" onclick="closeAuth()">Отмена</button>
+            </div>
+        </div>
+
+        <div class="modal" id="buildsModal">
+            <div class="modal-content" style="max-width: 500px;">
+                <h2>Мои сборки</h2>
+                <div id="buildsList" style="max-height: 400px; overflow-y: auto;"></div>
+                <button class="btn btn-full btn-secondary" onclick="closeBuilds()">Закрыть</button>
+            </div>
+        </div>
+
+        <div class="builder-grid">
+            <div class="panel mobile-active" id="panel-components">
+                <h3><span class="material-symbols-outlined">tune</span> Комплектующие</h3>
+                <div id="componentTypes"></div>
+            </div>
+
+            <div class="panel" id="panel-build">
+                <h3><span class="material-symbols-outlined">memory</span> Текущая сборка</h3>
+                <div id="buildSlots"></div>
+                <div class="total-price" id="totalPrice">
+                    <span class="material-symbols-outlined">payments</span> Итого: 0 ₽
+                </div>
+                <button class="btn btn-full" onclick="saveBuild()">
+                    <span class="material-symbols-outlined">save</span> Сохранить сборку
+                </button>
+                <button class="btn btn-full btn-secondary" onclick="checkCompatibility()">
+                    <span class="material-symbols-outlined">analytics</span> Проверить совместимость
+                </button>
+                <button class="btn btn-full btn-secondary" onclick="clearBuild()">
+                    <span class="material-symbols-outlined">delete_sweep</span> Очистить сборку
+                </button>
+            </div>
+
+            <div class="panel" id="panel-products">
+                <h3>
+                    <button class="btn-back-mobile" onclick="goBackToComponents()" title="Назад к комплектующим">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                    </button>
+                    <span class="material-symbols-outlined">inventory_2</span> Доступные товары
+                </h3>
+                <div id="products"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api';
+        let authToken = localStorage.getItem('token');
+        let isRegisterMode = false;
+        let currentBuild = {};
+        let allProducts = {};
+        let selectedComponentType = null;
+
+        // ====== UX МОБИЛЬНОЕ ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ======
+        function switchMobileTab(index, clickedButton) {
+            document.querySelectorAll('.mobile-tab-btn').forEach(btn => btn.classList.remove('active'));
+            clickedButton.classList.add('active');
+
+            const panels = [
+                document.getElementById('panel-components'),
+                document.getElementById('panel-build'),
+                document.getElementById('panel-products')
+            ];
+
+            panels.forEach((panel, i) => {
+                if (i === index) {
+                    panel.classList.add('mobile-active');
+                } else {
+                    panel.classList.remove('mobile-active');
+                }
+            });
+
+            if (index === 2 && !selectedComponentType) {
+                const firstComponent = document.querySelector('.component-item');
+                if (firstComponent) firstComponent.click();
+            }
+        }
+
+        function goBackToComponents() {
+            const componentsTabBtn = document.getElementById('tab-btn-0');
+            if (componentsTabBtn) {
+                switchMobileTab(0, componentsTabBtn);
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 1100) {
+                document.getElementById('panel-components').classList.add('mobile-active');
+                document.getElementById('panel-build').classList.add('mobile-active');
+                document.getElementById('panel-products').classList.add('mobile-active');
+            } else {
+                const activeTabBtn = document.querySelector('.mobile-tab-btn.active');
+                if (activeTabBtn) activeTabBtn.click();
+            }
+        });
+
+        if (window.innerWidth > 1100) {
+            document.getElementById('panel-components').classList.add('mobile-active');
+            document.getElementById('panel-build').classList.add('mobile-active');
+            document.getElementById('panel-products').classList.add('mobile-active');
+        }
+
+        // ====== ЛОГИКА ТЕМЫ ======
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        const savedTheme = localStorage.getItem('theme') ||
+            (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeIcon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+        }
+
+        // ====== АВТОРИЗАЦИЯ ======
+
+        function updateAuthUI() {
+            const statusEl = document.getElementById('authStatus');
+            const btnLogin = document.getElementById('btnLogin');
+            const btnRegister = document.getElementById('btnRegister');
+            const btnLogout = document.getElementById('btnLogout');
+
+            if (authToken) {
+                statusEl.innerHTML = '<span class="material-symbols-outlined">gpp_good</span> Авторизован';
+                statusEl.style.color = 'var(--accent-success)';
+                btnLogin.style.display = 'none';
+                btnRegister.style.display = 'none';
+                btnLogout.style.display = 'inline-block';
+            } else {
+                statusEl.innerHTML = '<span class="material-symbols-outlined">gpp_maybe</span> Не авторизован';
+                statusEl.style.color = 'var(--accent-error)';
+                btnLogin.style.display = 'inline-block';
+                btnRegister.style.display = 'inline-block';
+                btnLogout.style.display = 'none';
+            }
+        }
+
+        function showLogin() {
+            isRegisterMode = false;
+            document.getElementById('authTitle').textContent = 'Вход';
+            document.getElementById('authUsername').style.display = 'none';
+            document.getElementById('authSubmit').textContent = 'Войти';
+            document.getElementById('authModal').style.display = 'block';
+        }
+
+        function showRegister() {
+            isRegisterMode = true;
+            document.getElementById('authTitle').textContent = 'Регистрация';
+            document.getElementById('authUsername').style.display = 'block';
+            document.getElementById('authSubmit').textContent = 'Зарегистрироваться';
+            document.getElementById('authModal').style.display = 'block';
+        }
+
+        function closeAuth() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        async function doAuth() {
+            const email = document.getElementById('authEmail').value.trim();
+            const password = document.getElementById('authPassword').value.trim();
+            const username = document.getElementById('authUsername').value.trim();
+
+            if (!email || !password) { alert('Заполните все поля'); return; }
+            if (isRegisterMode && !username) { alert('Введите имя пользователя'); return; }
+
+            const url = isRegisterMode ? `${API_URL}/auth/register` : `${API_URL}/auth/login`;
+            const body = isRegisterMode ? { email, password, username } : { email, password };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    authToken = data.token;
+                    localStorage.setItem('token', authToken);
+                    closeAuth();
+                    updateAuthUI();
+                    alert(`Добро пожаловать, ${data.username}!`);
+                } else {
+                    const msg = data.errors ? data.errors.join('\n') : data.message;
+                    alert(msg || 'Ошибка');
+                }
+            } catch (error) {
+                alert('Ошибка соединения');
+            }
+        }
+
+        function logout() {
+            authToken = null;
+            localStorage.removeItem('token');
+            updateAuthUI();
+            clearBuild();
+        }
+
+        document.getElementById('authSubmit').addEventListener('click', doAuth);
+
+        document.getElementById('authPassword').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') doAuth();
+        });
+
+        // ====== КОНФИГУРАТОР ======
+
+        async function fetchWithAuth(url, options = {}) {
+            const headers = { ...options.headers };
+
+            if (!(options.body instanceof FormData)) {
+                headers['Content-Type'] = 'application/json';
+            }
+
+            if (authToken) {
+                headers['Authorization'] = `Bearer ${authToken}`;
+            }
+
+            return fetch(url, { ...options, headers });
+        }
+
+        async function loadComponentTypes() {
+            try {
+                const response = await fetch(`${API_URL}/builder/component-types`);
+                const types = await response.json();
+
+                const container = document.getElementById('componentTypes');
+                container.innerHTML = types.map(type => `
+                            <div class="component-item" onclick="selectComponentType('${type.name}', ${type.id})">
+                                ${type.name}
+                            </div>
+                        `).join('');
+            } catch (error) {
+                console.error('Ошибка загрузки типов:', error);
+            }
+        }
+
+        function loadBuildSlots() {
+            const container = document.getElementById('buildSlots');
+            const slotTypes = ['CPU', 'GPU', 'Motherboard', 'RAM', 'Storage', 'PowerSupply', 'Case', 'Cooler'];
+
+            container.innerHTML = slotTypes.map(type => {
+                const product = currentBuild[type];
+                const filledClass = product ? 'filled' : '';
+                const value = product ? `${product.name} - ${product.price?.toLocaleString()} ₽` : 'Не выбрано';
+
+                return `
+                            <div class="build-slot ${filledClass}">
+                                <span class="slot-label">${type}:</span>
+                                <span class="slot-value">${value}</span>
+                            </div>
+                        `;
+            }).join('');
+
+            updateTotalPrice();
+        }
+
+        function updateTotalPrice() {
+            const total = Object.values(currentBuild).reduce((sum, p) => sum + (p.price || 0), 0);
+            document.getElementById('totalPrice').innerHTML = `<span class="material-symbols-outlined">payments</span> Итого: ${total.toLocaleString()} ₽`;
+        }
+
+        function clearBuild() {
+            currentBuild = {};
+            loadBuildSlots();
+        }
+
+        async function selectComponentType(typeName, typeId) {
+            selectedComponentType = typeName;
+
+            document.querySelectorAll('.component-item').forEach(item => {
+                item.classList.remove('selected');
+                if (item.textContent.trim() === typeName) item.classList.add('selected');
+            });
+
+            await loadProducts(typeName);
+
+            if (window.innerWidth <= 1100) {
+                const productsTabBtn = document.getElementById('tab-btn-2');
+                if (productsTabBtn) switchMobileTab(2, productsTabBtn);
+            }
+        }
+
+        async function loadProducts(componentType) {
+            const container = document.getElementById('products');
+            container.innerHTML = '<div class="loading">Загрузка...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/builder/products/${componentType}`);
+                const products = await response.json();
+                allProducts[componentType] = products;
+
+                if (products.length === 0) {
+                    container.innerHTML = '<div class="loading">Нет товаров</div>';
+                    return;
+                }
+
+                container.innerHTML = products.map(product => `
+                            <div class="product-card" onclick="addToBuild('${componentType}', ${product.id})">
+                                <div><strong>${product.name}</strong></div>
+                                <div class="product-price">${product.price?.toLocaleString() || 0} ₽</div>
+                            </div>
+                        `).join('');
+            } catch (error) {
+                container.innerHTML = '<div class="loading">Ошибка загрузки</div>';
+            }
+        }
+
+        function addToBuild(componentType, productId) {
+            const products = allProducts[componentType] || [];
+            const product = products.find(p => p.id === productId);
+
+            if (product) {
+                currentBuild[componentType] = product;
+                loadBuildSlots();
+
+                if (window.innerWidth <= 1100) {
+                    const buildTabBtn = document.getElementById('tab-btn-1');
+                    if (buildTabBtn) switchMobileTab(1, buildTabBtn);
+                }
+            }
+        }
+
+        // ====== СОХРАНЕНИЕ И ЗАГРУЗКА СБОРОК ======
+
+        async function saveBuild() {
+            if (!authToken) {
+                alert('Войдите в систему!');
+                showLogin();
+                return;
+            }
+
+            const componentIds = Object.values(currentBuild).map(p => p.id);
+            if (componentIds.length === 0) {
+                alert('Добавьте компоненты!');
+                return;
+            }
+
+            const name = prompt('Название сборки:', 'Моя сборка');
+            if (!name) return;
+
+            try {
+                const response = await fetchWithAuth(`${API_URL}/builder/builds`, {
+                    method: 'POST',
+                    body: JSON.stringify({ name, componentIds })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    let msg = `✅ Сборка "${data.name}" сохранена!\nСумма: ${data.totalPrice?.toLocaleString()} ₽`;
+                    if (data.compatibilityWarnings?.length > 0) {
+                        msg += '\n\n⚠️ Предупреждения:\n' + data.compatibilityWarnings.join('\n');
+                    }
+                    alert(msg);
+                } else if (response.status === 401) {
+                    alert('Сессия истекла. Войдите заново.');
+                    logout();
+                } else {
+                    alert('Ошибка сохранения');
+                }
+            } catch (error) {
+                alert('Ошибка соединения');
+            }
+        }
+
+        async function showMyBuilds() {
+            if (!authToken) {
+                alert('Войдите в систему!');
+                showLogin();
+                return;
+            }
+
+            document.getElementById('buildsModal').style.display = 'block';
+            document.getElementById('buildsList').innerHTML = '<div class="loading">Загрузка...</div>';
+
+            try {
+                const response = await fetchWithAuth(`${API_URL}/builder/builds`);
+
+                if (response.status === 401) {
+                    document.getElementById('buildsList').innerHTML = '<p>Сессия истекла. Войдите заново.</p>';
+                    return;
+                }
+
+                const builds = await response.json();
+
+                if (builds.length === 0) {
+                    document.getElementById('buildsList').innerHTML = '<p>У вас пока нет сохранённых сборок</p>';
+                    return;
+                }
+
+                document.getElementById('buildsList').innerHTML = builds.map(build => `
+                            <div class="build-item" onclick="loadBuild(${build.id})">
+                                <div><strong>${build.name}</strong></div>
+                                <div style="color: var(--accent-success); font-weight: bold;">${build.totalPrice?.toLocaleString()} ₽</div>
+                                <div style="font-size:0.75rem; color: var(--text-muted); margin-top: 4px;">
+                                    ${new Date(build.createdAt).toLocaleDateString()}
+                                    (${build.components?.length || 0} компонентов)
+                                </div>
+                            </div>
+                        `).join('');
+            } catch (error) {
+                document.getElementById('buildsList').innerHTML = '<p>Ошибка загрузки</p>';
+            }
+        }
+
+        function closeBuilds() {
+            document.getElementById('buildsModal').style.display = 'none';
+        }
+
+        async function loadBuild(buildId) {
+            try {
+                const response = await fetchWithAuth(`${API_URL}/builder/builds/${buildId}`);
+
+                if (response.ok) {
+                    const build = await response.json();
+
+                    currentBuild = {};
+
+                    for (const component of build.components) {
+                        const typeStr = getComponentTypeString(component.product.componentType);
+
+                        const productResponse = await fetch(`${API_URL}/builder/products/${typeStr}`);
+                        const products = await productResponse.json();
+                        const fullProduct = products.find(p => p.id === component.product.id);
+
+                        if (fullProduct) {
+                            currentBuild[typeStr] = fullProduct;
+                        } else {
+                            currentBuild[typeStr] = {
+                                id: component.product.id,
+                                name: component.product.name,
+                                price: component.product.price
+                            };
+                        }
+                    }
+
+                    loadBuildSlots();
+                    closeBuilds();
+                    alert(`Сборка "${build.name}" загружена!`);
+                }
+            } catch (error) {
+                alert('Ошибка загрузки сборки');
+            }
+        }
+
+        function getComponentTypeString(typeNumber) {
+            const types = ['CPU', 'GPU', 'Motherboard', 'RAM', 'Storage', 'PowerSupply', 'Case', 'Cooler', 'CaseFan'];
+            return types[typeNumber] || 'CPU';
+        }
+
+        async function checkCompatibility() {
+            const componentIds = Object.values(currentBuild).map(p => p.id);
+            if (componentIds.length < 2) {
+                alert('Добавьте минимум 2 компонента');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/builder/check-compatibility`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(componentIds)
+                });
+
+                const data = await response.json();
+
+                let msg = data.isCompatible ? '✅ Все компоненты совместимы!' : '❌ Найдены проблемы:\n\n';
+                if (data.errors?.length) msg += 'Ошибки:\n' + data.errors.join('\n') + '\n\n';
+                if (data.warnings?.length) msg += 'Предупреждения:\n' + data.warnings.join('\n');
+
+                alert(msg);
+            } catch (error) {
+                alert('Ошибка проверки');
+            }
+        }
+
+        // Инициализация
+        updateAuthUI();
+        loadComponentTypes();
+        loadBuildSlots();
+    </script>
+</body>
+</html>

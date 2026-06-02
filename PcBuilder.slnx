@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="PcBuilder.Api/PcBuilder.Api.csproj" />
+  <Project Path="PcBuilder.Core/PcBuilder.Core.csproj" />
+  <Project Path="PcBuilder.Tests/PcBuilder.Tests.csproj" />
+</Solution>

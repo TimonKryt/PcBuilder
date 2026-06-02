@@ -1,0 +1,14 @@
+D:\source\repos\PcBuilder\PcBuilder.Core\bin\Release\net10.0\PcBuilder.Core.deps.json
+D:\source\repos\PcBuilder\PcBuilder.Core\bin\Release\net10.0\PcBuilder.Core.runtimeconfig.json
+D:\source\repos\PcBuilder\PcBuilder.Core\bin\Release\net10.0\PcBuilder.Core.dll
+D:\source\repos\PcBuilder\PcBuilder.Core\bin\Release\net10.0\PcBuilder.Core.pdb
+D:\source\repos\PcBuilder\PcBuilder.Core\obj\Release\net10.0\PcBuilder.Core.csproj.AssemblyReference.cache
+D:\source\repos\PcBuilder\PcBuilder.Core\obj\Release\net10.0\PcBuilder.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\source\repos\PcBuilder\PcBuilder.Core\obj\Release\net10.0\PcBuilder.Core.AssemblyInfoInputs.cache
+D:\source\repos\PcBuilder\PcBuilder.Core\obj\Release\net10.0\PcBuilder.Core.AssemblyInfo.cs
+D:\source\repos\PcBuilder\PcBuilder.Core\obj\Release\net10.0\PcBuilder.Core.csproj.CoreCompileInputs.cache
+D:\source\repos\PcBuilder\PcBuilder.Core\obj\Release\net10.0\PcBuilder.Core.dll
+D:\source\repos\PcBuilder\PcBuilder.Core\obj\Release\net10.0\refint\PcBuilder.Core.dll
+D:\source\repos\PcBuilder\PcBuilder.Core\obj\Release\net10.0\PcBuilder.Core.pdb
+D:\source\repos\PcBuilder\PcBuilder.Core\obj\Release\net10.0\PcBuilder.Core.genruntimeconfig.cache
+D:\source\repos\PcBuilder\PcBuilder.Core\obj\Release\net10.0\ref\PcBuilder.Core.dll
