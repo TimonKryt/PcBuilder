@@ -20,21 +20,16 @@
 ## 🚀 Установка и запуск
 
 ### Windows (установщик)
-1. Скачайте [PCBuilder_Setup.exe]([https://github.com/username/PcBuilder/releases/latest](https://github.com/TimonKryt/PcBuilder/releases/download/v1.0/PCBuilder_Setup.exe))
+1. Скачайте [PCBuilder_Setup.exe](https://github.com/TimonKryt/PcBuilder/releases/download/v1.0/PCBuilder_Setup.exe)
 2. Запустите установщик и следуйте инструкциям
 3. После установки запустите приложение через ярлык на рабочем столе
-4. Приложение откроется в браузере по умолчанию
+4. Откройте браузер и перейдите на `http://localhost:5000`
 
 ### Windows (портативная версия)
-1. Скачайте [PCBuilder_Portable.zip](https://github.com/username/PcBuilder/releases/latest)
+1. Скачайте [PCBuilder_Portable.zip](https://github.com/TimonKryt/PcBuilder/releases/download/v1.0/PCBuilder-main.zip)
 2. Распакуйте архив в любую папку
 3. Запустите `PcBuilder.Api.exe`
 4. Откройте браузер и перейдите на `http://localhost:5000`
-
-### Android / iOS (PWA)
-1. Откройте сайт приложения в браузере (Chrome для Android, Safari для iOS)
-2. Нажмите «Установить приложение» (Android) или «На экран Домой» (iOS)
-3. Приложение появится на рабочем столе и будет работать как нативное
 
 ## 📦 Требования для ПК
 
