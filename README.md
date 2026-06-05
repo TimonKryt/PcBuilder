@@ -20,7 +20,7 @@
 ## 🚀 Установка и запуск
 
 ### Windows (установщик)
-1. Скачайте [PCBuilder_Setup.exe](https://github.com/username/PcBuilder/releases/latest)
+1. Скачайте [PCBuilder_Setup.exe]([https://github.com/username/PcBuilder/releases/latest](https://github.com/TimonKryt/PcBuilder/releases/download/v1.0/PCBuilder_Setup.exe))
 2. Запустите установщик и следуйте инструкциям
 3. После установки запустите приложение через ярлык на рабочем столе
 4. Приложение откроется в браузере по умолчанию
